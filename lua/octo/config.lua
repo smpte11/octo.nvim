@@ -40,10 +40,14 @@ local M = {}
 ---    review_commits?: OctoSnacksActionList,
 ---  }
 
+---@class OctoPickerConfigMini
+---@field content_from_bottom boolean
+
 ---@class OctoPickerConfig
 ---@field use_emojis boolean -- Used by fzf-lua
 ---@field mappings OctoPickerMappings
 ---@field snacks OctoPickerConfigSnacks -- Snacks specific config
+---@field mini OctoPickerConfigMini
 
 ---@class OctoConfigColors
 ---@field white string
@@ -172,6 +176,9 @@ function M.get_default_values()
           commits = {},
           review_commits = {},
         },
+      },
+      mini = {
+        content_from_bottom = false,
       },
     },
     default_remote = { "upstream", "origin" },
@@ -536,7 +543,7 @@ function M.validate_config()
   end
 
   local function validate_pickers()
-    validate_string_enum(config.picker, "picker", { "telescope", "fzf-lua", "snacks" })
+    validate_string_enum(config.picker, "picker", { "telescope", "fzf-lua", "snacks", "mini_picker" })
 
     if not validate_type(config.picker_config, "picker_config", "table") then
       return

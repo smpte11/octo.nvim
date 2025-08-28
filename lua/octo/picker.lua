@@ -16,6 +16,7 @@ function M.setup()
     end
   else
     utils.error("Error loading picker provider " .. provider_name)
+    utils.error(provider)
   end
 end
 

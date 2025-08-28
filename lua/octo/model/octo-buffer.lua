@@ -1215,6 +1215,11 @@ function OctoBuffer:get_comment_at_line(line)
   end
 end
 
+---Gets the underlying node
+function OctoBuffer:get_node()
+  return self.node
+end
+
 ---Gets the issue/PR body at cursor (if any)
 function OctoBuffer:get_body_at_cursor()
   local cursor = vim.api.nvim_win_get_cursor(0)
