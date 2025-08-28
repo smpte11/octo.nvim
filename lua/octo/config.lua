@@ -36,10 +36,14 @@ local M = {}
 ---    search?: OctoSnacksActionList,
 ---  }
 
+---@class OctoPickerConfigMini
+---@field content_from_bottom boolean
+
 ---@class OctoPickerConfig
 ---@field use_emojis boolean -- Used by fzf-lua
 ---@field mappings OctoPickerMappings
 ---@field snacks OctoPickerConfigSnacks -- Snacks specific config
+---@field mini OctoPickerConfigMini
 
 ---@class OctoConfigColors
 ---@field white string
@@ -164,6 +168,9 @@ function M.get_default_values()
           issue_templates = {},
           search = {},
         },
+      },
+      mini = {
+        content_from_bottom = false,
       },
     },
     default_remote = { "upstream", "origin" },
