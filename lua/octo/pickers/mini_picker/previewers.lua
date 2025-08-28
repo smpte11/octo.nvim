@@ -21,7 +21,7 @@ local function issue_preview(obj)
   local reactions_line = vim.api.nvim_buf_line_count(bufnr) - 1
   writers.write_block(bufnr, { "", "" }, reactions_line)
   writers.write_reactions(bufnr, obj.reactionGroups, reactions_line)
-  vim.api.nvim_buf_set_option(bufnr, "filetype", "octo")
+  vim.bo[bufnr].filetype = "octo"
   local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
   vim.api.nvim_buf_delete(bufnr, { force = true })
   return lines
@@ -84,7 +84,7 @@ local function discussion_preview(obj)
     writers.write_discussion_answer(bufnr, obj, line)
   end
 
-  vim.api.nvim_buf_set_option(bufnr, "filetype", "octo")
+  vim.bo[bufnr].filetype = "octo"
   local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
   vim.api.nvim_buf_delete(bufnr, { force = true })
   return lines

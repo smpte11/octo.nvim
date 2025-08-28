@@ -120,8 +120,8 @@ M.picker = {
             },
             options = {
               content_from_bottom = cfg.picker_config
-                  and cfg.picker_config.mini_picker
-                  and cfg.picker_config.mini_picker.content_from_bottom
+                  and cfg.picker_config.mini
+                  and cfg.picker_config.mini.content_from_bottom
                 or false,
             },
           }
@@ -202,8 +202,8 @@ M.picker = {
             },
             options = {
               content_from_bottom = cfg.picker_config
-                  and cfg.picker_config.mini_picker
-                  and cfg.picker_config.mini_picker.content_from_bottom
+                  and cfg.picker_config.mini
+                  and cfg.picker_config.mini.content_from_bottom
                 or false,
             },
           }
@@ -298,8 +298,8 @@ M.picker = {
             },
             options = {
               content_from_bottom = cfg.picker_config
-                  and cfg.picker_config.mini_picker
-                  and cfg.picker_config.mini_picker.content_from_bottom
+                  and cfg.picker_config.mini
+                  and cfg.picker_config.mini.content_from_bottom
                 or false,
             },
           }
@@ -394,8 +394,8 @@ M.picker = {
             },
             options = {
               content_from_bottom = cfg.picker_config
-                  and cfg.picker_config.mini_picker
-                  and cfg.picker_config.mini_picker.content_from_bottom
+                  and cfg.picker_config.mini
+                  and cfg.picker_config.mini.content_from_bottom
                 or false,
             },
           }
@@ -464,8 +464,8 @@ M.picker = {
               },
               options = {
                 content_from_bottom = cfg.picker_config
-                    and cfg.picker_config.mini_picker
-                    and cfg.picker_config.mini_picker.content_from_bottom
+                    and cfg.picker_config.mini
+                    and cfg.picker_config.mini.content_from_bottom
                   or false,
               },
             }
@@ -537,8 +537,8 @@ M.picker = {
               },
               options = {
                 content_from_bottom = cfg.picker_config
-                    and cfg.picker_config.mini_picker
-                    and cfg.picker_config.mini_picker.content_from_bottom
+                    and cfg.picker_config.mini
+                    and cfg.picker_config.mini.content_from_bottom
                   or false,
               },
             }
@@ -610,8 +610,8 @@ M.picker = {
               },
               options = {
                 content_from_bottom = cfg.picker_config
-                    and cfg.picker_config.mini_picker
-                    and cfg.picker_config.mini_picker.content_from_bottom
+                    and cfg.picker_config.mini
+                    and cfg.picker_config.mini.content_from_bottom
                   or false,
               },
             }
@@ -778,8 +778,8 @@ M.picker = {
         },
         options = {
           content_from_bottom = cfg.picker_config
-              and cfg.picker_config.mini_picker
-              and cfg.picker_config.mini_picker.content_from_bottom
+              and cfg.picker_config.mini
+              and cfg.picker_config.mini.content_from_bottom
             or false,
         },
       }
@@ -852,8 +852,8 @@ M.picker = {
               },
               options = {
                 content_from_bottom = cfg.picker_config
-                    and cfg.picker_config.mini_picker
-                    and cfg.picker_config.mini_picker.content_from_bottom
+                    and cfg.picker_config.mini
+                    and cfg.picker_config.mini.content_from_bottom
                   or false,
               },
             }
@@ -935,8 +935,8 @@ M.picker = {
             },
             options = {
               content_from_bottom = cfg.picker_config
-                  and cfg.picker_config.mini_picker
-                  and cfg.picker_config.mini_picker.content_from_bottom
+                  and cfg.picker_config.mini
+                  and cfg.picker_config.mini.content_from_bottom
                 or false,
             },
           }
@@ -1041,8 +1041,8 @@ M.picker = {
               },
               options = {
                 content_from_bottom = cfg.picker_config
-                    and cfg.picker_config.mini_picker
-                    and cfg.picker_config.mini_picker.content_from_bottom
+                    and cfg.picker_config.mini
+                    and cfg.picker_config.mini.content_from_bottom
                   or false,
               },
             }
@@ -1100,8 +1100,8 @@ M.picker = {
       },
       options = {
         content_from_bottom = cfg.picker_config
-            and cfg.picker_config.mini_picker
-            and cfg.picker_config.mini_picker.content_from_bottom
+            and cfg.picker_config.mini
+            and cfg.picker_config.mini.content_from_bottom
           or false,
       },
     }
@@ -1169,12 +1169,12 @@ M.picker = {
               items = items_for_picker,
               name = "Commits (PR #" .. pr_number .. ")",
               choose = choose_commit,
-              -- preview = function(buf_id, item_to_preview) -- could show commit diffstat or full message
+              -- preview = function(buf_id, item_to_preview) ... end -- could show commit diffstat or full message
             },
             options = {
               content_from_bottom = cfg.picker_config
-                  and cfg.picker_config.mini_picker
-                  and cfg.picker_config.mini_picker.content_from_bottom
+                  and cfg.picker_config.mini
+                  and cfg.picker_config.mini.content_from_bottom
                 or false,
             },
           }
@@ -1270,8 +1270,8 @@ M.picker = {
             },
             options = {
               content_from_bottom = cfg.picker_config
-                  and cfg.picker_config.mini_picker
-                  and cfg.picker_config.mini_picker.content_from_bottom
+                  and cfg.picker_config.mini
+                  and cfg.picker_config.mini.content_from_bottom
                 or false,
             },
           }
@@ -1327,8 +1327,8 @@ M.picker = {
       },
       options = {
         content_from_bottom = cfg.picker_config
-            and cfg.picker_config.mini_picker
-            and cfg.picker_config.mini_picker.content_from_bottom
+            and cfg.picker_config.mini
+            and cfg.picker_config.mini.content_from_bottom
           or false,
       },
     }
@@ -1399,8 +1399,8 @@ M.picker = {
               },
               options = {
                 content_from_bottom = cfg.picker_config
-                    and cfg.picker_config.mini_picker
-                    and cfg.picker_config.mini_picker.content_from_bottom
+                    and cfg.picker_config.mini
+                    and cfg.picker_config.mini.content_from_bottom
                   or false,
               },
             }
@@ -1475,8 +1475,8 @@ M.picker = {
       },
       options = {
         content_from_bottom = cfg.picker_config
-            and cfg.picker_config.mini_picker
-            and cfg.picker_config.mini_picker.content_from_bottom
+            and cfg.picker_config.mini
+            and cfg.picker_config.mini.content_from_bottom
           or false,
       },
     }
@@ -1521,8 +1521,8 @@ M.picker = {
       },
       options = {
         content_from_bottom = cfg.picker_config
-            and cfg.picker_config.mini_picker
-            and cfg.picker_config.mini_picker.content_from_bottom
+            and cfg.picker_config.mini
+            and cfg.picker_config.mini.content_from_bottom
           or false,
       },
     }
@@ -1607,8 +1607,8 @@ M.picker = {
               },
               options = {
                 content_from_bottom = cfg.picker_config
-                    and cfg.picker_config.mini_picker
-                    and cfg.picker_config.mini_picker.content_from_bottom
+                    and cfg.picker_config.mini
+                    and cfg.picker_config.mini.content_from_bottom
                   or false,
               },
             }
@@ -1632,12 +1632,12 @@ M.picker = {
     end
 
     local buffer = utils.get_current_buffer()
-    if not buffer or not buffer.node or not buffer.node.projectCards then
+    if not buffer or not buffer:get_node() or not buffer:get_node().projectCards then
       utils.error "Cannot find project cards in the current buffer context."
       return
     end
 
-    local cards = buffer.node.projectCards.nodes
+    local cards = buffer:get_node().projectCards.nodes
     if not cards or #cards == 0 then
       utils.info "No project cards found for the current item."
       return
@@ -1679,8 +1679,8 @@ M.picker = {
       },
       options = {
         content_from_bottom = cfg.picker_config
-            and cfg.picker_config.mini_picker
-            and cfg.picker_config.mini_picker.content_from_bottom
+            and cfg.picker_config.mini
+            and cfg.picker_config.mini.content_from_bottom
           or false,
       },
     }
@@ -1771,12 +1771,12 @@ M.picker = {
                 return false
               end
 
-              if not MiniPick_Col then
+              if not MiniPick then
                 utils.error "MiniPick is not loaded for column selection."
                 return false
               end
               local cfg_col = octo_config.values
-              MiniPick_Col.start {
+              MiniPick.start {
                 source = {
                   items = column_items_for_picker,
                   name = "Select Column in '" .. selected_project_item.data.name .. "'",
@@ -1784,20 +1784,20 @@ M.picker = {
                 },
                 options = {
                   content_from_bottom = cfg_col.picker_config
-                      and cfg_col.picker_config.mini_picker
-                      and cfg_col.picker_config.mini_picker.content_from_bottom
+                      and cfg_col.picker_config.mini
+                      and cfg_col.picker_config.mini.content_from_bottom
                     or false,
                 },
               }
               return false
             end
 
-            if not MiniPick_Proj then
+            if not MiniPick then
               utils.error "MiniPick is not loaded for project selection."
               return
             end
             local cfg_proj = octo_config.values
-            MiniPick_Proj.start {
+            MiniPick.start {
               source = {
                 items = project_items_for_picker,
                 name = "Select Project",
@@ -1805,8 +1805,8 @@ M.picker = {
               },
               options = {
                 content_from_bottom = cfg_proj.picker_config
-                    and cfg_proj.picker_config.mini_picker
-                    and cfg_proj.picker_config.mini_picker.content_from_bottom
+                    and cfg_proj.picker_config.mini
+                    and cfg_proj.picker_config.mini.content_from_bottom
                   or false,
               },
             }
@@ -1830,12 +1830,12 @@ M.picker = {
     end
 
     local buffer = utils.get_current_buffer()
-    if not buffer or not buffer.node or not buffer.node.projectItems then
+    if not buffer or not buffer:get_node() or not buffer:get_node().projectItems then
       utils.error "Cannot find project v2 items (projectItems) in the current buffer context."
       return
     end
 
-    local cards_v2 = buffer.node.projectItems.nodes
+    local cards_v2 = buffer:get_node().projectItems.nodes
     if not cards_v2 or #cards_v2 == 0 then
       utils.info "No project v2 items found for the current item."
       return
@@ -1981,12 +1981,12 @@ M.picker = {
               return false
             end
 
-            if not MiniPick_Proj_v2 then
+            if not MiniPick then
               utils.error "MiniPick is not loaded for project v2 selection."
               return
             end
             local cfg_proj_v2 = octo_config.values
-            MiniPick_Proj_v2.start {
+            MiniPick.start {
               source = {
                 items = project_items_for_picker,
                 name = "Select Project (v2)",
@@ -1994,8 +1994,8 @@ M.picker = {
               },
               options = {
                 content_from_bottom = cfg_proj_v2.picker_config
-                    and cfg_proj_v2.picker_config.mini_picker
-                    and cfg_proj_v2.picker_config.mini_picker.content_from_bottom
+                    and cfg_proj_v2.picker_config.mini
+                    and cfg_proj_v2.picker_config.mini.content_from_bottom
                   or false,
               },
             }
