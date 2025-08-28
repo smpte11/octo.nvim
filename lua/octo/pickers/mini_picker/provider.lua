@@ -7,7 +7,9 @@ local reviews = require "octo.reviews"
 local MiniPick = require "mini.pick"
 local previewers = require "octo.pickers.mini_picker.previewers"
 
--- get_filter function
+--- @param filter_opts table
+--- @param kind string
+--- @return string
 local function get_filter(filter_opts, kind)
   local filter = ""
   local allowed_values = {}
@@ -46,7 +48,7 @@ end
 local M = {}
 
 M.picker = {
-  -- issues function
+  --- @param opts table
   issues = function(opts)
     opts = opts or {}
     if not opts.states then
@@ -71,6 +73,8 @@ M.picker = {
     utils.info "Fetching issues (this may take a while) ..."
     gh.run {
       args = { "api", "graphql", "--paginate", "--jq", ".", "-f", string.format("query=%s", query) },
+      --- @param output string
+      --- @param stderr string
       cb = function(output, stderr)
         if stderr and not utils.is_blank(stderr) then
           utils.error(stderr)
@@ -91,6 +95,7 @@ M.picker = {
             })
           end
 
+          --- @param item table
           local function choose_issue(item)
             if item and item.data then
               vim.defer_fn(function()
@@ -125,7 +130,7 @@ M.picker = {
     }
   end,
 
-  -- prs function
+  --- @param opts table
   prs = function(opts)
     opts = opts or {}
     if not opts.states then
@@ -150,6 +155,8 @@ M.picker = {
     utils.info "Fetching pull requests (this may take a while) ..."
     gh.run {
       args = { "api", "graphql", "--paginate", "--jq", ".", "-f", string.format("query=%s", query) },
+      --- @param output string
+      --- @param stderr string
       cb = function(output, stderr)
         if stderr and not utils.is_blank(stderr) then
           utils.error(stderr)
@@ -170,6 +177,7 @@ M.picker = {
             })
           end
 
+          --- @param item table
           local function choose_pr(item)
             if item and item.data then
               vim.defer_fn(function()
@@ -204,7 +212,7 @@ M.picker = {
     }
   end,
 
-  -- changed_files function
+  --- @param opts table
   changed_files = function(opts)
     opts = opts or {}
     local buffer = utils.get_current_buffer()
@@ -227,6 +235,8 @@ M.picker = {
 
     gh.run {
       args = { "api", "--paginate", url },
+      --- @param output string
+      --- @param stderr string
       cb = function(output, stderr)
         if stderr and not utils.is_blank(stderr) then
           utils.error("Error fetching changed files: " .. stderr)
@@ -263,6 +273,7 @@ M.picker = {
             })
           end
 
+          --- @param item table
           local function choose_file(item)
             if item and item.data then
               utils.info(string.format("Selected file: %s (Status: %s)", item.data.filename, item.data.status))
@@ -297,7 +308,7 @@ M.picker = {
     }
   end,
 
-  -- search function
+  --- @param opts table
   search = function(opts)
     opts = opts or {}
     opts.type = opts.type or "ISSUE"
@@ -315,6 +326,7 @@ M.picker = {
       jq = ".data.search.nodes",
       opts = { mode = "sync" },
       cb = gh.create_callback {
+        --- @param output string
         success = function(output)
           local results = vim.json.decode(output or "[]")
           if #results == 0 then
@@ -349,6 +361,7 @@ M.picker = {
             })
           end
 
+          --- @param selected_item table
           local function choose_search_item(selected_item)
             if selected_item and selected_item.data then
               local item_data = selected_item.data
@@ -387,6 +400,7 @@ M.picker = {
             },
           }
         end,
+        --- @param err_output string
         error = function(err_output)
           utils.error("Error during search: " .. err_output)
         end,
@@ -394,7 +408,7 @@ M.picker = {
     }
   end,
 
-  -- repos function
+  --- @param opts table
   repos = function(opts)
     opts = opts or {}
     local login = opts.login
@@ -408,6 +422,7 @@ M.picker = {
       jq = ".data.repositoryOwner.repositories.nodes",
       opts = {
         cb = gh.create_callback {
+          --- @param output string
           success = function(output)
             local repos_data = utils.get_flatten_pages(output)
             if #repos_data == 0 then
@@ -428,6 +443,7 @@ M.picker = {
               })
             end
 
+            --- @param selected_item table
             local function choose_repo(selected_item)
               if selected_item and selected_item.data then
                 utils.open_in_browser("repo", selected_item.data.nameWithOwner)
@@ -454,6 +470,7 @@ M.picker = {
               },
             }
           end,
+          --- @param err_output string
           error = function(err_output)
             utils.error("Error fetching repositories: " .. err_output)
           end,
@@ -462,7 +479,7 @@ M.picker = {
     }
   end,
 
-  -- labels function
+  --- @param opts table
   labels = function(opts)
     opts = opts or {}
     local repo = opts.repo or utils.get_remote_name()
@@ -479,6 +496,7 @@ M.picker = {
       jq = ".data.repository.labels.nodes",
       opts = {
         cb = gh.create_callback {
+          --- @param output string
           success = function(output)
             local labels_data = vim.json.decode(output or "[]")
             if #labels_data == 0 then
@@ -494,6 +512,7 @@ M.picker = {
               })
             end
 
+            --- @param selected_item table
             local function choose_label(selected_item)
               if selected_item and selected_item.data then
                 if opts.cb then
@@ -524,6 +543,7 @@ M.picker = {
               },
             }
           end,
+          --- @param err_output string
           error = function(err_output)
             utils.error("Error fetching labels: " .. err_output)
           end,
@@ -532,7 +552,7 @@ M.picker = {
     }
   end,
 
-  -- milestones function
+  --- @param opts table
   milestones = function(opts)
     opts = opts or {}
     if not opts.cb then
@@ -553,6 +573,7 @@ M.picker = {
       jq = ".data.repository.milestones.nodes",
       opts = {
         cb = gh.create_callback {
+          --- @param output string
           success = function(output)
             local milestones_data = vim.json.decode(output or "[]")
             if #milestones_data == 0 then
@@ -568,6 +589,7 @@ M.picker = {
               })
             end
 
+            --- @param selected_item table
             local function choose_milestone(selected_item)
               if selected_item and selected_item.data then
                 opts.cb(selected_item.data)
@@ -594,6 +616,7 @@ M.picker = {
               },
             }
           end,
+          --- @param err_output string
           error = function(err_output)
             utils.error("Error fetching milestones: " .. err_output)
           end,
@@ -602,6 +625,7 @@ M.picker = {
     }
   end,
 
+  --- @param opts table
   users = function(opts) -- Corresponds to select_user
     opts = opts or {}
     local cfg = octo_config.values
@@ -613,6 +637,7 @@ M.picker = {
 
     if selection_type == "search" then
       picker_name = "Search Users"
+      --- @param callback fun(users: table)
       items_producer = function(callback)
         local search_prompt = opts.prompt
         if not search_prompt or utils.is_blank(search_prompt) then
@@ -627,9 +652,11 @@ M.picker = {
           jq = ".data.search.nodes", -- Assuming this jq path
           opts = {
             cb = gh.create_callback {
+              --- @param output string
               success = function(output)
                 callback(vim.json.decode(output or "[]"))
               end,
+              --- @param err string
               error = function(err)
                 utils.error("User search failed: " .. err)
                 callback {}
@@ -640,6 +667,7 @@ M.picker = {
       end
     elseif selection_type == "mentionable" then
       picker_name = "Mentionable Users"
+      --- @param callback fun(users: table)
       items_producer = function(callback)
         if not repo_for_context then
           utils.error "Cannot determine repository for mentionable users."
@@ -655,9 +683,11 @@ M.picker = {
           jq = ".data.repository.mentionableUsers.nodes",
           opts = {
             cb = gh.create_callback {
+              --- @param output string
               success = function(output)
                 callback(utils.get_flatten_pages(output))
               end,
+              --- @param err string
               error = function(err)
                 utils.error("Failed to fetch mentionable users: " .. err)
                 callback {}
@@ -668,6 +698,7 @@ M.picker = {
       end
     elseif selection_type == "assignable" then
       picker_name = "Assignable Users"
+      --- @param callback fun(users: table)
       items_producer = function(callback)
         if not repo_for_context then
           utils.error "Cannot determine repository for assignable users."
@@ -683,9 +714,11 @@ M.picker = {
           jq = ".data.repository.assignableUsers.nodes",
           opts = {
             cb = gh.create_callback {
+              --- @param output string
               success = function(output)
                 callback(utils.get_flatten_pages(output))
               end,
+              --- @param err string
               error = function(err)
                 utils.error("Failed to fetch assignable users: " .. err)
                 callback {}
@@ -699,6 +732,7 @@ M.picker = {
       return
     end
 
+    --- @param users_data table
     items_producer(function(users_data)
       if #users_data == 0 then
         utils.info(
@@ -720,6 +754,7 @@ M.picker = {
         })
       end
 
+      --- @param selected_item table
       local function choose_user(selected_item)
         if selected_item and selected_item.data then
           if opts.cb then
@@ -751,6 +786,7 @@ M.picker = {
     end)
   end,
 
+  --- @param opts table
   assignees = function(opts)
     opts = opts or {}
     local buffer = utils.get_current_buffer()
@@ -775,6 +811,7 @@ M.picker = {
       jq = jq_path,
       opts = {
         cb = gh.create_callback {
+          --- @param output string
           success = function(output)
             local assignees_data = vim.json.decode(output or "[]")
             if #assignees_data == 0 then
@@ -790,6 +827,7 @@ M.picker = {
               })
             end
 
+            --- @param selected_item table
             local function choose_assignee(selected_item)
               if selected_item and selected_item.data then
                 if opts.cb then
@@ -820,6 +858,7 @@ M.picker = {
               },
             }
           end,
+          --- @param err string
           error = function(err)
             utils.error("Failed to fetch assignees: " .. err)
           end,
@@ -828,6 +867,7 @@ M.picker = {
     }
   end,
 
+  --- @param opts table
   gists = function(opts)
     opts = opts or {}
     local privacy = "ALL"
@@ -848,6 +888,8 @@ M.picker = {
         "-f",
         string.format("query=%s", graphql("gists_query", privacy)),
       },
+      --- @param output string
+      --- @param stderr string
       cb = function(output, stderr)
         if stderr and not utils.is_blank(stderr) then
           utils.error("Error fetching gists: " .. stderr)
@@ -869,6 +911,7 @@ M.picker = {
             })
           end
 
+          --- @param selected_item table
           local function choose_gist(selected_item)
             if selected_item and selected_item.data and selected_item.data.url then
               utils.open_in_browser_from_url(selected_item.data.url) -- Assuming gist URL is directly usable
@@ -902,6 +945,7 @@ M.picker = {
     }
   end,
 
+  --- @param opts table
   notifications = function(opts)
     opts = opts or {}
     opts.all = opts.all or false -- Default to unread notifications
@@ -929,6 +973,7 @@ M.picker = {
       opts = {
         headers = { "Accept: application/vnd.github.v3+json" }, -- Ensure correct API version
         cb = gh.create_callback {
+          --- @param output string
           success = function(output)
             local notifications_data = vim.json.decode(output or "[]")
             if #notifications_data == 0 then
@@ -948,6 +993,7 @@ M.picker = {
               })
             end
 
+            --- @param selected_item table
             local function choose_notification(selected_item)
               if
                 selected_item
@@ -961,6 +1007,7 @@ M.picker = {
                   opts = {
                     headers = { "Accept: application/vnd.github.v3+json" },
                     cb = gh.create_callback {
+                      --- @param subject_details_output string
                       success = function(subject_details_output)
                         local subject_details = vim.json.decode(subject_details_output)
                         if subject_details and subject_details.html_url then
@@ -969,6 +1016,7 @@ M.picker = {
                           utils.error "Could not determine HTML URL for the notification."
                         end
                       end,
+                      --- @param err string
                       error = function(err)
                         utils.error("Failed to fetch notification details: " .. err)
                       end,
@@ -999,6 +1047,7 @@ M.picker = {
               },
             }
           end,
+          --- @param err string
           error = function(err)
             utils.error("Error fetching notifications: " .. err)
           end,
@@ -1007,6 +1056,7 @@ M.picker = {
     }
   end,
 
+  --- @param opts table
   issue_templates = function(opts)
     opts = opts or {}
     local templates = opts.templates
@@ -1029,6 +1079,7 @@ M.picker = {
       })
     end
 
+    --- @param selected_item table
     local function choose_template(selected_item)
       if selected_item and selected_item.data then
         cb(selected_item.data)
@@ -1056,6 +1107,7 @@ M.picker = {
     }
   end,
 
+  --- @param opts table
   commits = function(opts) -- For a PR
     opts = opts or {}
     local buffer = utils.get_current_buffer()
@@ -1073,6 +1125,8 @@ M.picker = {
 
     gh.run {
       args = { "api", "--paginate", url },
+      --- @param output string
+      --- @param stderr string
       cb = function(output, stderr)
         if stderr and not utils.is_blank(stderr) then
           utils.error("Error fetching commits: " .. stderr)
@@ -1093,6 +1147,7 @@ M.picker = {
             })
           end
 
+          --- @param selected_item table
           local function choose_commit(selected_item)
             if selected_item and selected_item.data and selected_item.data.html_url then
               utils.open_in_browser_from_url(selected_item.data.html_url)
@@ -1128,6 +1183,7 @@ M.picker = {
     }
   end,
 
+  --- @param opts table
   review_commits = function(opts) -- For selecting commit range in review
     opts = opts or {}
     local callback = opts.cb
@@ -1151,6 +1207,8 @@ M.picker = {
 
     gh.run {
       args = { "api", "--paginate", url },
+      --- @param output string
+      --- @param stderr string
       cb = function(output, stderr)
         if stderr and not utils.is_blank(stderr) then
           utils.error("Error fetching review commits: " .. stderr)
@@ -1182,6 +1240,7 @@ M.picker = {
             })
           end
 
+          --- @param selected_item table
           local function choose_review_commit(selected_item)
             if selected_item and selected_item.data then
               local right_sha = selected_item.data.sha
@@ -1221,6 +1280,7 @@ M.picker = {
     }
   end,
 
+  --- @param opts table
   pending_threads = function(opts)
     opts = opts or {}
     local threads = opts.threads
@@ -1246,6 +1306,7 @@ M.picker = {
       })
     end
 
+    --- @param selected_item table
     local function choose_thread(selected_item)
       if selected_item and selected_item.data then
         reviews.jump_to_pending_review_thread(selected_item.data)
@@ -1273,6 +1334,7 @@ M.picker = {
     }
   end,
 
+  --- @param opts table
   discussions = function(opts)
     opts = opts or {}
     local repo = opts.repo or utils.get_remote_name()
@@ -1298,6 +1360,7 @@ M.picker = {
       jq = ".data.repository.discussions.nodes",
       opts = {
         cb = gh.create_callback {
+          --- @param output string
           success = function(output)
             local discussions_data = utils.get_flatten_pages(output)
             if #discussions_data == 0 then
@@ -1314,6 +1377,7 @@ M.picker = {
               })
             end
 
+            --- @param selected_item table
             local function choose_discussion(selected_item)
               if selected_item and selected_item.data then
                 utils.get("discussion", selected_item.data.number, selected_item.repo_full_name)
@@ -1341,6 +1405,7 @@ M.picker = {
               },
             }
           end,
+          --- @param err string
           error = function(err)
             utils.error("Error fetching discussions: " .. err)
           end,
@@ -1349,6 +1414,7 @@ M.picker = {
     }
   end,
 
+  --- @param opts table
   workflow_runs = function(opts)
     opts = opts or {}
     local workflow_runs_data = opts.workflow_runs
@@ -1388,6 +1454,7 @@ M.picker = {
       })
     end
 
+    --- @param selected_item table
     local function choose_workflow_run(selected_item)
       if selected_item and selected_item.data then
         on_select_cb(selected_item.data)
@@ -1415,6 +1482,7 @@ M.picker = {
     }
   end,
 
+  --- @param opts table
   actions = function(opts) -- Octo actions picker
     opts = opts or {}
     local flattened_actions = opts.flattened_actions -- Expects actions to be passed in
@@ -1432,6 +1500,7 @@ M.picker = {
       })
     end
 
+    --- @param selected_item table
     local function choose_action(selected_item)
       if selected_item and selected_item.data and selected_item.data.fun then
         selected_item.data.fun() -- Execute the action's function
@@ -1459,6 +1528,7 @@ M.picker = {
     }
   end,
 
+  --- @param opts table
   assigned_labels = function(opts)
     opts = opts or {}
     local cb = opts.cb
@@ -1500,6 +1570,7 @@ M.picker = {
       jq = jq_path,
       opts = {
         cb = gh.create_callback {
+          --- @param output string
           success = function(output)
             local labels_data = vim.json.decode(output or "[]")
             if #labels_data == 0 then
@@ -1515,6 +1586,7 @@ M.picker = {
               })
             end
 
+            --- @param selected_item table
             local function choose_assigned_label(selected_item)
               if selected_item and selected_item.data then
                 cb(selected_item.data) -- Execute the callback
@@ -1541,6 +1613,7 @@ M.picker = {
               },
             }
           end,
+          --- @param err string
           error = function(err)
             utils.error("Error fetching assigned labels: " .. err)
           end,
@@ -1549,6 +1622,7 @@ M.picker = {
     }
   end,
 
+  --- @param opts table
   project_cards = function(opts) -- Legacy: select_project_card
     opts = opts or {}
     local cb = opts.cb
@@ -1584,6 +1658,7 @@ M.picker = {
       })
     end
 
+    --- @param selected_item table
     local function choose_project_card(selected_item)
       if selected_item and selected_item.data then
         cb(selected_item.data.id)
@@ -1611,6 +1686,7 @@ M.picker = {
     }
   end,
 
+  --- @param opts table
   project_columns = function(opts) -- Legacy: select_target_project_column
     opts = opts or {}
     local cb = opts.cb
@@ -1637,6 +1713,7 @@ M.picker = {
       jq = ".data",
       opts = {
         cb = gh.create_callback {
+          --- @param output_projects string
           success = function(output_projects)
             local resp_projects = vim.json.decode(output_projects or "{}")
             local projects = {}
@@ -1662,6 +1739,7 @@ M.picker = {
               table.insert(project_items_for_picker, { text = proj.name, data = proj })
             end
 
+            --- @param selected_project_item table
             local function choose_project_for_column_selection(selected_project_item)
               if
                 not (
@@ -1685,6 +1763,7 @@ M.picker = {
                 return true
               end
 
+              --- @param selected_column_item table
               local function choose_column(selected_column_item)
                 if selected_column_item and selected_column_item.data then
                   cb(selected_column_item.data.id)
@@ -1732,6 +1811,7 @@ M.picker = {
               },
             }
           end,
+          --- @param err string
           error = function(err)
             utils.error("Error fetching projects: " .. err)
           end,
@@ -1740,6 +1820,7 @@ M.picker = {
     }
   end,
 
+  --- @param opts table
   project_cards_v2 = function(opts)
     opts = opts or {}
     local cb = opts.cb
@@ -1773,6 +1854,7 @@ M.picker = {
     utils.error "Multiple project v2 cards found. This picker currently supports only single card assignment directly or selection when only one card is present."
   end,
 
+  --- @param opts table
   project_columns_v2 = function(opts)
     opts = opts or {}
     local cb = opts.cb
@@ -1799,6 +1881,7 @@ M.picker = {
       jq = ".data",
       opts = {
         cb = gh.create_callback {
+          --- @param output_projects_v2 string
           success = function(output_projects_v2)
             local resp_projects_v2 = vim.json.decode(output_projects_v2 or "{}")
             local projects_v2_list = {}
@@ -1838,6 +1921,7 @@ M.picker = {
               table.insert(project_items_for_picker, { text = proj.title, data = proj })
             end
 
+            --- @param selected_project_item table
             local function choose_project_v2_for_column(selected_project_item)
               if not (selected_project_item and selected_project_item.data) then
                 utils.info "No project v2 selected or data missing."
@@ -1916,6 +2000,7 @@ M.picker = {
               },
             }
           end,
+          --- @param err string
           error = function(err)
             utils.error("Error fetching projects (v2): " .. err)
           end,

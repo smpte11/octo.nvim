@@ -6,9 +6,11 @@ local utils = require "octo.utils"
 
 local M = {}
 
--- Creates a preview for an issue or a pull request.
+--- Creates a preview for an issue or a pull request.
 -- It uses a temporary buffer to format the content using the writers,
 -- and then returns the lines from the buffer.
+-- @param obj table The issue or pull request object.
+-- @return table A table of strings representing the preview.
 local function issue_preview(obj)
   local bufnr = vim.api.nvim_create_buf(false, true)
   local state = utils.get_displayed_state(obj.__typename == "Issue", obj.state, obj.stateReason)
@@ -25,7 +27,9 @@ local function issue_preview(obj)
   return lines
 end
 
--- Previewer for issues.
+--- Previewer for issues.
+--- @param item table The picker item.
+--- @return table A table of strings representing the preview.
 M.issue = function(item)
   if item and item.data then
     return issue_preview(item.data)
@@ -33,8 +37,10 @@ M.issue = function(item)
   return { "No data to preview" }
 end
 
--- Previewer for pull requests.
--- It uses the same preview as issues.
+--- Previewer for pull requests.
+--- It uses the same preview as issues.
+--- @param item table The picker item.
+--- @return table A table of strings representing the preview.
 M.pr = function(item)
   if item and item.data then
     return issue_preview(item.data)
@@ -42,7 +48,9 @@ M.pr = function(item)
   return { "No data to preview" }
 end
 
--- Previewer for changed files.
+--- Previewer for changed files.
+--- @param item table The picker item.
+--- @return table A table of strings representing the preview.
 M.changed_file = function(item)
   if item and item.data and item.data.patch then
     return vim.split(item.data.patch, "\n")
@@ -50,7 +58,9 @@ M.changed_file = function(item)
   return { "No patch available for this file." }
 end
 
--- Previewer for search results.
+--- Previewer for search results.
+--- @param item table The picker item.
+--- @return table A table of strings representing the preview.
 M.search = function(item)
   if item and item.data and (item.type == "ISSUE" or item.type == "PULL_REQUEST") then
     return issue_preview(item.data)
@@ -58,7 +68,9 @@ M.search = function(item)
   return { "No preview available for this item type." }
 end
 
--- Creates a preview for a discussion.
+--- Creates a preview for a discussion.
+--- @param obj table The discussion object.
+--- @return table A table of strings representing the preview.
 local function discussion_preview(obj)
   local bufnr = vim.api.nvim_create_buf(false, true)
   local state = obj.closed and "CLOSED" or "OPEN"
@@ -78,7 +90,9 @@ local function discussion_preview(obj)
   return lines
 end
 
--- Previewer for discussions.
+--- Previewer for discussions.
+--- @param item table The picker item.
+--- @return table A table of strings representing the preview.
 M.discussion = function(item)
   if item and item.data then
     return discussion_preview(item.data)
